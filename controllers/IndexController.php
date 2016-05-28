@@ -5,6 +5,6 @@ class IndexController extends Controller
 {
     public function index()
     {
-        $this->loadTemplate('Index', 'index');
+        $this->loadTemplate('Index', 'index', ['message' => 'Test']);
     }
 }

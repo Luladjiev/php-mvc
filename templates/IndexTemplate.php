@@ -3,11 +3,11 @@ namespace MVC;
 
 class IndexTemplate extends Template
 {
-    public function index()
+    public function index($params)
     {
         ?>
         
-        <div>Index Template</div>
+        <div>Index Template - <?php echo $params['message'];?></div>
         
         <?php
     }
