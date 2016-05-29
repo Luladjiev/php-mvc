@@ -5,10 +5,8 @@ class DB
 {		
 	protected $_rDB;		
 	protected $_sTbl;
-	protected $_sDb;
 	
 	/**		 
-	 * Клас за интеграция с база данни
 	 * 
 	 * @param PDO $rDB Обект с връзка към базата данни
 	 * @param string $sTable Име на таблица
@@ -28,6 +26,19 @@ class DB
 		
 		$this->_rDB = $rDB;
 		$this->_sTbl = $sTable;
+	}
+	
+	protected function getFields()
+	{
+		$fields = $this->select("SHOW FIELDS FROM {$this->_sTbl}");
+		
+		$row = array();
+		
+		foreach ($fields as $field) {
+			$row[$field['Field']] = "";
+		}
+		
+		return $row;
 	}
 	
 	/**
@@ -136,13 +147,7 @@ class DB
 			}
 		}
 		
-		$fields = $this->select("SHOW FIELDS FROM {$this->_sTbl}");
-		
-		$row = array();
-		
-		foreach ($fields as $field) {
-			$row[$field['Field']] = "";
-		}
+		$row = $this->getFields();
 		
 		foreach ($row as $key => $val) {
 			if (!array_key_exists($key, $aData)) {
@@ -158,39 +163,47 @@ class DB
 		}
 
 		if (!empty($row['id'])) { #update
-
-			$aFields = array();
-			
-			foreach ($row as $key => $val) {
-				if ($key != 'id') {
-					$aFields[] = "`$key` = :$key";
-				}
-			}
-
-			$sQuery = sprintf("UPDATE {$this->_sTbl} SET %s WHERE `id` = :id", implode(',', $aFields));
-
-			$stmt = $this->_rDB->prepare($sQuery);
-
-			$stmt->execute($row);
+			$this->doUpdate($row);
 		} else { #insert
-			$keys = array_keys($row);
-
-			$valuesKeys = array();
-
-			foreach ($row as $key => $value) {
-				$valuesKeys[] = ":$key";
-			}
-
-			$sQuery = sprintf("INSERT INTO {$this->_sTbl}(`%s`) VALUES (%s)", implode('`,`', $keys), implode(',', $valuesKeys));
-			
-			$stmt = $this->_rDB->prepare($sQuery);
-
-			$stmt->execute($row);
-			
+			$this->doInsert($row);
 			$aData['id'] = $this->_rDB->lastInsertId();
 		}
 	}
+	
+	protected function doUpdate($row)
+	{
+		$aFields = array();
+			
+		foreach ($row as $key => $val) {
+			if ($key != 'id') {
+				$aFields[] = "`$key` = :$key";
+			}
+		}
 
+		$sQuery = sprintf("UPDATE {$this->_sTbl} SET %s WHERE `id` = :id", implode(',', $aFields));
+
+		$stmt = $this->_rDB->prepare($sQuery);
+
+		$stmt->execute($row);
+	}
+	
+	protected function doInsert($row)
+	{
+		$keys = array_keys($row);
+
+		$valuesKeys = array();
+
+		foreach ($row as $key => $value) {
+			$valuesKeys[] = ":$key";
+		}
+
+		$sQuery = sprintf("INSERT INTO {$this->_sTbl}(`%s`) VALUES (%s)", implode('`,`', $keys), implode(',', $valuesKeys));
+		
+		$stmt = $this->_rDB->prepare($sQuery);
+
+		$stmt->execute($row);
+	}
+	
 	/**
 	 * @param int $nID
 	 * @throws Exception

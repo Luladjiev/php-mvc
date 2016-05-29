@@ -3,7 +3,7 @@ namespace MVC;
 
 class Autoloader 
 {
-    protected static $paths = ['../classes', '../controllers', '../templates'];
+    protected static $paths = ['../classes', '../controllers', '../templates', '../models'];
     
     static public function Load($class) 
     {
