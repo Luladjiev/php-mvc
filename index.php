@@ -10,11 +10,11 @@ try {
         $controllerName = ucfirst($controllerName);
     }
     
-    $className = "MVC\\{$controllerName}Controller";
+    $className = "MVC\\Controllers\\{$controllerName}Controller";
     
     $class = new $className();
     
-    if ($class instanceof MVC\Controller === false) {
+    if ($class instanceof MVC\Classes\Controller === false) {
         throw new Exception("$className is not an instance of Controller");
     }
     

@@ -1,7 +1,7 @@
 <?php
-namespace MVC;
+namespace MVC\Models;
 
-class Articles extends DB
+class Articles extends \MVC\Classes\DB
 {
     function __construct()
     {

@@ -17,14 +17,16 @@ class Autoloader
         
         $relative_class = substr($class, $lenght);
         
-        foreach(self::$paths as $path) {
-            $file = __DIR__."/$path/$relative_class.php";
-            
-            if (file_exists($file)) {
-                require $file;
-                break;
-            }
+        list($path, $relative_class) = explode('\\', $relative_class);
+        
+        $path = strtolower($path);
+        
+        $file = __DIR__."/../$path/$relative_class.php";
+        
+        if (file_exists($file)) {
+            require $file;
         }
+    
     }
 }    
 

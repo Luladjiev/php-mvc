@@ -1,5 +1,5 @@
 <?php
-namespace MVC;
+namespace MVC\Classes;
 
 class Template 
 {

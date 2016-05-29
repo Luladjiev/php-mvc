@@ -1,7 +1,7 @@
 <?php
-namespace MVC;
+namespace MVC\Templates;
 
-class IndexTemplate extends Template
+class IndexTemplate extends \MVC\Classes\Template
 {
     public function index($params)
     {

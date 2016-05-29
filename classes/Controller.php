@@ -1,5 +1,5 @@
 <?php
-namespace MVC;
+namespace MVC\Classes;
 
 class Controller 
 {
@@ -28,7 +28,8 @@ class Controller
     
     final protected function loadTemplate($class, $method, $params = array())
     {
-        $className = __NAMESPACE__.'\\'.$class."Template";
+        $className = 'MVC\\Templates\\'.$class."Template";
+        
         if (!class_exists($className)) {
             throw new \Exception("Template $class does not exists");
         }
