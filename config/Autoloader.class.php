@@ -3,8 +3,6 @@ namespace MVC;
 
 class Autoloader 
 {
-    protected static $paths = ['../classes', '../controllers', '../templates', '../models'];
-    
     static public function Load($class) 
     {
         $prefix = __NAMESPACE__."\\";
