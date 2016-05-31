@@ -30,7 +30,7 @@ try {
     $class->setParams($_GET, $_POST);
     $class->$method();
 } catch(Exception $e) {
-    echo var_dump($e);
+    var_dump($e);
 }
 
 $content = ob_get_contents();
