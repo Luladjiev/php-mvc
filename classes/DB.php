@@ -10,18 +10,18 @@ class DB
      * 
      * @param PDO $rDB Обект с връзка към базата данни
      * @param string $sTable Име на таблица
-     * @throws Exception Грешка
+     * @throws \Exception Грешка
      */
     function __construct(PDO $rDB, $sTable)
     {
         if(empty($rDB)) 
         {
-            throw new Exception();
+            throw new \Exception();
         }
         
         if(empty($sTable))
         {
-            throw new Exception();
+            throw new \Exception();
         }
         
         $this->_rDB = $rDB;
@@ -112,13 +112,13 @@ class DB
     /**
      * 
      * @param int $nID
-     * @throws Exception
+     * @throws \Exception
      * @return array()
      */
     public function get($nID)
     {
         if (!(int)$nID) {
-            throw new Exception();
+            throw new \Exception();
         }
         
         $stmt = $this->_rDB->prepare("SELECT * FROM {$this->_sTbl} WHERE id = :id");
@@ -133,17 +133,17 @@ class DB
     /**
      * 
      * @param array $aData
-     * @throws Exception
+     * @throws \Exception
      */
     public function update(&$aData)
     {
         if (empty($aData)) {
-            throw new Exception();
+            throw new \Exception();
         }
         
         foreach ($aData as $value) {
             if (!is_scalar($value)) {
-                throw new Exception();
+                throw new \Exception();
             }
         }
         
@@ -159,7 +159,7 @@ class DB
         }
         
         if (empty($row)) {
-            throw new Exception();
+            throw new \Exception();
         }
 
         if (!empty($row['id'])) { #update
@@ -206,12 +206,12 @@ class DB
     
     /**
      * @param int $nID
-     * @throws Exception
+     * @throws \Exception
      */
     public function delete($nID)
     {
         if (!is_numeric($nID)) {
-            throw new Exception();
+            throw new \Exception();
         }
         
         $field = $this->selectRow("SHOW FIELDS FROM {$this->_sTbl} WHERE FIELD like 'to_arc'");
